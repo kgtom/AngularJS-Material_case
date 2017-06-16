@@ -1,20 +1,22 @@
 (function(){
  'use strict';
-angular.module('inputExample', ['ngMaterial'])
-        .controller('ExampleController', ExampleController);
-        ExampleController.$inject = ['$scope','$mdDialog'];
+angular.module('confirmApp', ['ngMaterial','confirmFactoryApp'])
+       //.facotry('confirmFactory',confirmFactory)
+        .controller('confirmController', confirmController);
+        confirmController.$inject = ['$scope','$mdDialog','loggerSvc','confirmFactory'];
 
- function ExampleController($scope,$mdDialog){
+ function confirmController($scope,$mdDialog,loggerSvc,confirmFactory){
          var vm = this; 
           vm.user = {  };
           vm.showAlert=showAlert;
           vm.showPrompt=showPrompt;
           vm.showConfirm=showConfirm;
-          vm.test=test;
+          vm.cancle=cancle;
             $scope.roomCount = '1';
       //  $scope.customFullscreen = false;
-    function test(){
-       
+    function cancle(){
+       loggerSvc.writeLog("loggerSvc test....");
+       confirmFactory.myFac("myFactory test....")
         alert("test....");
     }
     //alert dialog 
@@ -57,16 +59,16 @@ angular.module('inputExample', ['ngMaterial'])
 function showConfirm(ev){
     var confirm = $mdDialog.confirm()
           .title('确定执行此操作吗？')
-          .textContent('确定后，订单将进行出票；取消后，订单作废！')
+          .textContent('确任后，订单将进行出票！')
           .ariaLabel('Lucky day')
           .targetEvent(ev)
-          .ok('确定')
-          .cancel('取消');
+          .ok('确认')
+          .cancel('晚一点再确认');
 
     $mdDialog.show(confirm).then(function() {
-       alert("确定")
+       alert("恭喜您，进入出票流程")
     }, function() {
-      alert("取消")
+      alert("记得早点确认")
     });
 }
   }
