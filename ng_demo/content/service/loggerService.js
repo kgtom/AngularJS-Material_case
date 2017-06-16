@@ -1,6 +1,6 @@
 (function(){
  'use strict';
- angular.module('confirmApp')
+ angular.module('loggerServiceApp',[])
   .service('loggerSvc',loggerSvc);
 
 //angular中service 用到DI思想,采用单例模式，一次生成，全局使用。
@@ -10,5 +10,5 @@
           console.info(msg);
           alert(msg+"来自serservice")
       }
-  }
+  };
 })();
