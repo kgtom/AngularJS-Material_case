@@ -1,0 +1,39 @@
+参考：
+js:http://tutlane.com/tutorial/angularjs/angularjs-http-jsonp-http-jsonp-service-method-example
+后端：.net web api  关于 JsonmediaTypeFormatter的注册
+https://stackoverflow.com/questions/17336014/net-4-5-asp-net-web-api-jsonp-support
+
+代码：
+js:
+   $scope.remoteApiTest = function () {
+        var url = "http://localhost:8026/api/values?callback=JSON_CALLBACK";
+        $http.jsonp(url)
+            .success(function (data, status, headers, config) {
+                alert(data)
+                console.info(data);
+               
+            })
+            .error(function (data, status, headers, config) {
+                console.info(data);
+            });
+
+    }
+
+    后端：
+     // GET api/values
+        public string  Get()
+        {
+            HttpRequest request = HttpContext.Current.Request;
+            string callback = request["callback"];
+             return callback + "({data:'返回数据'})";          
+        }
+
+        在Global.asax.cs中的applicaton_start 里面注册 JsonMediaTypeFormatter 类型
+          
+
+            GlobalConfiguration
+        .Configuration
+        .Formatters
+        .Insert(0, new JsonpMediaTypeFormatter(new JsonMediaTypeFormatter()));
+
+            
