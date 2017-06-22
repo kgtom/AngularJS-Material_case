@@ -2,12 +2,12 @@
     'use strict';
     angular.module('confirmServiceApp', [])
         .service('confirmService', confirmService);
-    confirmService.$inject = ['$http','$sce'];
+    confirmService.$inject = ['$http','$sce','$window'];
     //angular中service 用到DI思想,采用单例模式，一次生成，全局使用。
     //this来操作数据、定义函数。
 
     //writeLog 用来测试
-    function confirmService($http,$sce) {
+    function confirmService($http,$sce,$window) {
 
 
         //根据http 获取
@@ -31,13 +31,20 @@
             //     .error(function (error) {
             //         var dd = error;
             //     });
+//Add the following immediately before making a jsonp request.
+var c = $window.angular.callbacks.counter.toString(36);
 
-            var url = "http://192.168.0.28:820/v1/Develop/test"
+$window['angularcallbacks_' + c] = function (data) {
+    $window.angular.callbacks['_' + c](data);
+    delete $window['angularcallbacks_' + c];
+};
+            //var url = "http://192.168.0.28:820/v1/Develop/test"
+            var url = "http://192.168.0.28:820/v1/Develop/test?callback=JSON_CALLBACK";
             var trustedUrl = $sce.trustAsResourceUrl(url);
 
-            $http.jsonp(trustedUrl, { jsonpCallbackParam: 'JSON_CALLBACK' })
+            $http.jsonp(trustedUrl)
                 .success(function (data) {
-                    console.log(data.found);
+                    console.log(data);
                 }).error(function (data) {
                     console.info(data)
                 });

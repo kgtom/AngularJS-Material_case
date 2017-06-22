@@ -29,10 +29,10 @@
         $mdDialog.alert()
           .parent(angular.element(document.querySelector('#popupContainer')))
           .clickOutsideToClose(true)
-          .title('警告')
-          .textContent('确定要这么做吗？')
-          .ariaLabel('好吧')
-          .ok('Got it!')
+          .title('提示')
+          .textContent('恭喜您，进入出票流程')
+          //.ariaLabel('好吧')
+          .ok('OK!')
           .targetEvent(ev)
       );
     }
@@ -60,14 +60,15 @@
     function showConfirm(ev) {
       var confirm = $mdDialog.confirm()
         .title('确定执行此操作吗？')
-        .textContent('确任后，订单将进行出票！')
+        .textContent('确认后，订单将进行出票！')
         .ariaLabel('Lucky day')
         .targetEvent(ev)
         .ok('确认')
         .cancel('晚一点再确认');
 
       $mdDialog.show(confirm).then(function () {
-        alert("恭喜您，进入出票流程")
+        //alert("恭喜您，进入出票流程")
+        showAlert()
       }, function () {
         alert("记得早点确认")
       });
